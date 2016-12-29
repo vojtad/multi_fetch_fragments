@@ -54,6 +54,10 @@ module MultiFetchFragments
 
         # sequentially render any non-cached objects remaining
         if @collection.any?
+          unless @options[:modify_uncached_collection_proc].nil?
+            @collection = @options[:modify_uncached_collection_proc].call(@collection)
+          end
+
           non_cached_results = @template ? collection_with_template : collection_without_template
         end
 
