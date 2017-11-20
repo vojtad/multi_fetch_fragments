@@ -56,6 +56,12 @@ module MultiFetchFragments
         if @collection.any?
           unless @options[:modify_uncached_collection_proc].nil?
             @collection = @options[:modify_uncached_collection_proc].call(@collection)
+
+            unless @options[:uncached_collection_order_values].nil?
+              @collection.order_values = @options[:uncached_collection_order_values]
+            end
+
+            @collection = @collection.to_a unless @collection.is_a? Array
           end
 
           non_cached_results = @template ? collection_with_template : collection_without_template
