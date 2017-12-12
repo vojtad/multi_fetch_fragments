@@ -1,13 +1,8 @@
 module MultiFetchFragments
   extend ActiveSupport::Concern
 
-  included do
-    alias_method_chain :render_collection, :multi_fetch_cache
-  end
-
   private
-    def render_collection_with_multi_fetch_cache
-
+    def render_collection
       return nil if @collection.blank?
 
       if @options.key?(:spacer_template)
@@ -102,7 +97,7 @@ module MultiFetchFragments
   class Railtie < Rails::Railtie
     initializer "multi_fetch_fragments.initialize" do |app|
       ActionView::PartialRenderer.class_eval do
-        include MultiFetchFragments
+        prepend MultiFetchFragments
       end
     end
   end
